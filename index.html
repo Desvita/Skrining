@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skrining Gaya Hidup Anti Hipertensi</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .question {
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Skrining Gaya Hidup Anti Hipertensi</h1>
+  <form id="quizForm">
+
+    <!-- Pertanyaan akan disisipkan lewat JavaScript -->
+
+  </form>
+  <button type="button" onclick="calculateScore()">Lihat Hasil</button>
+
+  <div id="result"></div>
+
+  <script>
+    const questions = [
+      "Seberapa sering Anda makan sayur setiap hari?",
+      "Seberapa sering Anda makan buah minimal 2 kali sehari?",
+      "Seberapa sering Anda menghindari makanan cepat saji (fast food)?",
+      "Seberapa sering Anda membatasi konsumsi makanan tinggi garam (asin)?",
+      "Seberapa sering Anda membaca label kandungan natrium/garam pada produk makanan?",
+      "Seberapa sering Anda menghindari konsumsi makanan yang diawetkan (sosis, kornet, mie instan)?",
+      "Seberapa sering Anda membatasi konsumsi daging merah (sapi, kambing)?",
+      "Seberapa sering Anda memilih mengonsumsi susu rendah lemak?",
+      "Seberapa sering Anda rutin berolahraga minimal 30 menit setiap hari?",
+      "Seberapa sering Anda lebih memilih berjalan kaki atau bersepeda untuk aktivitas sehari-hari?",
+      "Seberapa sering Anda menghindari rokok atau sudah berhenti merokok?",
+      "Seberapa sering Anda membatasi konsumsi minuman beralkohol?",
+      "Seberapa sering Anda memantau berat badan secara rutin?",
+      "Seberapa sering Anda berusaha mempertahankan berat badan ideal?",
+      "Seberapa sering Anda mengelola stres (dengan relaksasi, hobi, ibadah, dsb.)?",
+      "Seberapa sering Anda rutin memeriksa tekanan darah?",
+      "Seberapa sering Anda tidur cukup (7-8 jam sehari)?",
+      "Seberapa sering Anda menghindari makanan/minuman manis berlebihan?",
+      "Seberapa sering Anda minum air putih minimal 8 gelas sehari?",
+      "Seberapa sering Anda menghindari makan gorengan secara berlebihan?"
+    ];
+
+    const options = [
+      {text: "Tidak Pernah", value: 1},
+      {text: "Jarang", value: 2},
+      {text: "Sering", value: 3},
+      {text: "Sangat Sering", value: 4}
+    ];
+
+    // Generate form
+    const form = document.getElementById('quizForm');
+    questions.forEach((q, i) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<p><b>${i+1}. ${q}</b></p>`;
+      options.forEach(opt => {
+        div.innerHTML += `
+          <label>
+            <input type="radio" name="q${i}" value="${opt.value}" required> ${opt.text}
+          </label><br/>
+        `;
+      });
+      form.appendChild(div);
+    });
+
+    function calculateScore() {
+      let total = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const answer = document.querySelector(`input[name="q${i}"]:checked`);
+        if (answer) {
+          total += parseInt(answer.value);
+        }
+      }
+
+      let kategori = "";
+      let saran = "";
+
+      if (total >= 70) {
+        kategori = "Bebas Hipertensi";
+        saran = "Gaya hidup Anda sangat baik. Pertahankan pola hidup sehat untuk mencegah hipertensi.";
+      } else if (total >= 55) {
+        kategori = "Beresiko Rendah Hipertensi";
+        saran = "Anda cukup baik menjaga gaya hidup, namun tetap lakukan perbaikan di beberapa aspek.";
+      } else if (total >= 40) {
+        kategori = "Beresiko Sedang Hipertensi";
+        saran = "Anda perlu memperbaiki pola hidup, seperti mengurangi garam, rutin berolahraga, dan mengelola stres.";
+      } else {
+        kategori = "Beresiko Tinggi Hipertensi";
+        saran = "Anda sangat berisiko terkena hipertensi. Segera konsultasi ke tenaga kesehatan dan ubah pola hidup Anda.";
+      }
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = `
+        <h2>Hasil Skrining</h2>
+        <p><strong>Total Skor:</strong> ${total}</p>
+        <p><strong>Kategori Risiko:</strong> ${kategori}</p>
+        <p>${saran}</p>
+        <p><em>Anda akan diarahkan ke halaman edukasi untuk informasi lebih lanjut...</em></p>
+      `;
+
+      // Redirect ke halaman edukasi (misalnya edukasi.html) setelah 5 detik
+      setTimeout(() => {
+        window.location.href = "edukasi.html";
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
